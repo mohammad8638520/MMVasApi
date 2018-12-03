@@ -1,5 +1,9 @@
 package ir.mmvas.vasapilib.retrofit.listeners;
 
+import android.util.Log;
+
+import com.google.gson.Gson;
+
 import ir.mmvas.vasapilib.retrofit.models.PushOtpResponse;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -9,6 +13,8 @@ public abstract class PushOtpListener extends BaseCallback<PushOtpResponse> {
 
     @Override
     public void onResponse(Call<PushOtpResponse> call, Response<PushOtpResponse> response) {
+        Log.d("PushOtpListener", "call.request = " + new Gson().toJson(call.request()));
+        Log.d("PushOtpListener", "response = " + new Gson().toJson(response));
         if(response == null || response.body() == null) {
             failure("empty response");
             return;
