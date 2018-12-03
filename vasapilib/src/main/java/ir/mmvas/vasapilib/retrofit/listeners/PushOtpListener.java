@@ -13,15 +13,13 @@ public abstract class PushOtpListener extends BaseCallback<PushOtpResponse> {
 
     @Override
     public void onResponse(Call<PushOtpResponse> call, Response<PushOtpResponse> response) {
-        Log.d("PushOtpListener", "call.request = " + new Gson().toJson(call.request()));
-        Log.d("PushOtpListener", "response = " + new Gson().toJson(response));
         if(response == null || response.body() == null) {
             failure("empty response");
             return;
         }
         if(response.isSuccessful()) {
             PushOtpResponse res = response.body();
-            if(res.isOk()){
+            if(res.isOk()) {
                 success(res.getMessage());
             } else {
                 failure(res.getMessage());
