@@ -5,14 +5,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.Bundle;
 import android.text.TextUtils;
 
 import ir.mmvas.vasapilib.retrofit.VasApiClient;
 import ir.mmvas.vasapilib.retrofit.VasApiService;
 import ir.mmvas.vasapilib.retrofit.listeners.PushOtpListener;
 import ir.mmvas.vasapilib.retrofit.listeners.SubscriptionCheckListener;
+import ir.mmvas.vasapilib.retrofit.listeners.UserModelListener;
 import ir.mmvas.vasapilib.retrofit.listeners.VerifyOtpListener;
+import ir.mmvas.vasapilib.retrofit.models.VasUserModel;
 
 public class VasApiHelper {
     private static VasApiHelper instance;
@@ -29,6 +30,13 @@ public class VasApiHelper {
             instance = new VasApiHelper(context, platform, serviceId);
         }
         return instance;
+    }
+
+    public VasApiHelper withSrvKey(String srvkey) {
+        if(!TextUtils.isEmpty(srvkey)){
+            this.prefs.edit().putString("srvkey", srvkey).apply();
+        }
+        return this;
     }
 
     public static VasApiHelper getInstance(){
@@ -69,9 +77,45 @@ public class VasApiHelper {
         if(TextUtils.isEmpty(token)){
             token = getToken();
         }
-
         getApiService().isSubscribed(mobile, token).enqueue(subCheckListener);
     }
+
+    public void getUserDetails(UserModelListener listener) {
+        if(listener == null) return;
+        String mobile = getMobileNumber();
+        if(!hasToken() || TextUtils.isEmpty(mobile)) {
+            listener.failure("Please Login First");
+            return;
+        }
+        String srvkey = srvkey();
+        if(TextUtils.isEmpty(srvkey)) {
+            listener.failure("srv key not defined");
+            return;
+        }
+        getApiService().getUser(mobile, srvkey, getToken()).enqueue(listener);
+    }
+
+    public void incrementUserScore(int index, int value, UserModelListener listener) {
+        if(listener == null) return;
+        String mobile = getMobileNumber();
+        if(!hasToken() || TextUtils.isEmpty(mobile)) {
+            listener.failure("Please Login First");
+            return;
+        }
+        String srvkey = srvkey();
+        if(TextUtils.isEmpty(srvkey)) {
+            listener.failure("srv key not defined");
+            return;
+        }
+        if(index < 0 || value <= 0) {
+            listener.failure("'index' should be non-negative and 'value' should be positive");
+            return;
+        }
+        getApiService().addUserScore(mobile, index, value, srvkey, getToken()).enqueue(listener);
+    }
+
+
+
 
     public String getMobileNumber() {
         return prefs.getString("mobile", null);
@@ -96,6 +140,31 @@ public class VasApiHelper {
 
     public void clear(){
         this.prefs.edit().clear().apply();
+    }
+
+    public String srvkey(){
+        return this.prefs.getString("srvkey", "");
+    }
+
+    private void saveUser(VasUserModel user) {
+        String u_scores = Utils.intArrayValuesToString(user.scores);
+        prefs.edit()
+                .putString("u_mobile", TextUtils.isEmpty(user.mobile) ? getMobileNumber() : user.mobile)
+                .putInt("u_serviceId", user.serviceId)
+                .putBoolean("u_subscribed", user.subscribed)
+                .putString("u_scores", u_scores)
+                .putString("u_token", TextUtils.isEmpty(user.token) ? getToken() : user.token)
+            .apply();
+    }
+
+    public VasUserModel getCurrentUser() {
+        VasUserModel user = new VasUserModel();
+        user.scores = Utils.stringToIntArray(prefs.getString("u_scores", ""));
+        user.serviceId = prefs.getInt("u_serviceId", (int) this.serviceId);
+        user.mobile = prefs.getString("u_mobile", getMobileNumber());
+        user.token = prefs.getString("u_token", getToken());
+        user.subscribed = prefs.getBoolean("u_subscribed", true);
+        return user;
     }
 
     private VasApiService getApiService() {
