@@ -25,9 +25,8 @@ public interface VasApiService {
     @POST("otp/charge")
     Call<ChargeOtpResponse> chargeOtp(@Field("mobile") String mobile, @Field("pin") String pin, @Field("campaign") String campaign);
 
-    @FormUrlEncoded
-    @POST("subscription/check")
-    Call<SubscriptionResponse> isSubscribed(@Field("mobile") String mobile, @Header("token")String token);
+    @GET("subscription/check")
+    Call<SubscriptionResponse> isSubscribed(@Header("mobile") String mobile, @Header("token") String token);
 
     @FormUrlEncoded
     @POST("unsubscribe")
