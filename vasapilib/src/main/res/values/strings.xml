@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">VasApiLib</string>
+    <string name="vas_apilib_error_in_connection">خطا در ارتباط با سرویس دهنده. دوباره تلاش کنید</string>
 </resources>

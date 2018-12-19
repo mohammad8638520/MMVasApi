@@ -34,7 +34,7 @@ public abstract class VerifyOtpListener extends BaseCallback<ChargeOtpResponse> 
 
     @Override
     public void onFailure(Call<ChargeOtpResponse> call, Throwable t) {
-        failure(t.getMessage());
+        failure(VasApiHelper.error_in_connection);
     }
 
     public abstract void success(String token);

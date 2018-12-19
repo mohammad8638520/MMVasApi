@@ -29,7 +29,7 @@ public abstract class UserModelListener extends BaseCallback<VasUserModel> {
 
     @Override
     public void onFailure(Call<VasUserModel> call, Throwable t) {
-        failure(t.getMessage());
+        failure(VasApiHelper.error_in_connection);
     }
 
     public abstract void success(VasUserModel user);

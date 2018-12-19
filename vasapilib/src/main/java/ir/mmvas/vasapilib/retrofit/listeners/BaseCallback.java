@@ -22,5 +22,4 @@ public abstract class BaseCallback<T> implements Callback<T> {
             return "";
         }
     }
-
 }

@@ -1,5 +1,6 @@
 package ir.mmvas.vasapilib.retrofit.listeners;
 
+import ir.mmvas.vasapilib.helper.VasApiHelper;
 import ir.mmvas.vasapilib.retrofit.models.SubscriptionResponse;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -24,7 +25,7 @@ public abstract class SubscriptionCheckListener extends BaseCallback<Subscriptio
 
     @Override
     public void onFailure(Call<SubscriptionResponse> call, Throwable t) {
-        failure(t.getMessage());
+        failure(VasApiHelper.error_in_connection);
     }
 
     public abstract void onResult(boolean subscribed);

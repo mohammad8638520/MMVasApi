@@ -7,6 +7,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.text.TextUtils;
 
+import ir.mmvas.vasapilib.R;
 import ir.mmvas.vasapilib.retrofit.VasApiClient;
 import ir.mmvas.vasapilib.retrofit.VasApiService;
 import ir.mmvas.vasapilib.retrofit.listeners.PushOtpListener;
@@ -24,6 +25,7 @@ public class VasApiHelper {
     private final String appVersionName;
     private SharedPreferences prefs;
 
+    public static String error_in_connection = "WebService Error";
 
     public static VasApiHelper getInstance(Context context, VasApiClient.VasPlat platform, long serviceId) {
         if(instance == null) {
@@ -39,6 +41,7 @@ public class VasApiHelper {
         return this;
     }
 
+
     public static VasApiHelper getInstance(){
         return instance;
     }
@@ -48,6 +51,7 @@ public class VasApiHelper {
         this.platform = platform;
         this.serviceId = serviceId;
         appVersionName = getAppVersionName(context);
+        VasApiHelper.error_in_connection = context.getString(R.string.vas_apilib_error_in_connection);
     }
 
     public void pushOtp(String mobile, PushOtpListener pushOtpListener){
