@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.CacheControl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -49,6 +50,7 @@ public class VasApiClient {
             Request request = chain.request().newBuilder()
                     .header("Content-Type", "application/json")
                     .header("Cache-Control", "no-cache")
+                    .cacheControl(CacheControl.FORCE_NETWORK)
                     .build();
             return chain.proceed(request);
         }
