@@ -146,7 +146,7 @@ public class VasApiHelper {
         return this.prefs.getString("srvkey", "");
     }
 
-    private void saveUser(VasUserModel user) {
+    public void saveUser(VasUserModel user) {
         String u_scores = Utils.intArrayValuesToString(user.scores);
         prefs.edit()
                 .putString("u_mobile", TextUtils.isEmpty(user.mobile) ? getMobileNumber() : user.mobile)
