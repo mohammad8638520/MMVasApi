@@ -39,8 +39,8 @@ public interface VasApiService {
 
     @PUT("user/{mobile}/scores/{index}/add/{value}")
     Call<VasUserModel> addUserScore(@Path("mobile") String mobile,
-                                    @Path("mobile") int index,
-                                    @Path("mobile") int value,
+                                    @Path("index") int index,
+                                    @Path("value") int value,
                                     @Header("srvkey") String srvkey,
                                     @Header("token") String token);
 
