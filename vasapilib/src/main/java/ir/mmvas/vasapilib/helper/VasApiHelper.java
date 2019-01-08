@@ -50,7 +50,7 @@ public class VasApiHelper {
         prefs = context.getSharedPreferences("VasApiHelper", Context.MODE_PRIVATE);
         this.platform = platform;
         this.serviceId = serviceId;
-        appVersionName = getAppVersionName(context);
+        appVersionName = "app_" + getAppVersionName(context);
         VasApiHelper.error_in_connection = context.getString(R.string.vas_apilib_error_in_connection);
     }
 
@@ -67,7 +67,15 @@ public class VasApiHelper {
             return;
         }
         String mobile = getMobileNumber();
-        getApiService().chargeOtp(mobile, pin, appVersionName).enqueue(verifyOtpListener);
+        getApiService().chargeOtp(appVersionName, mobile, pin, "").enqueue(verifyOtpListener);
+    }
+
+    public void verifyOtp(String pin, String campaign, VerifyOtpListener verifyOtpListener) {
+        if (TextUtils.isEmpty(pin)) {
+            return;
+        }
+        String mobile = getMobileNumber();
+        getApiService().chargeOtp(appVersionName, mobile, pin, campaign).enqueue(verifyOtpListener);
     }
 
     public void checkSubscription(SubscriptionCheckListener subCheckListener){

@@ -23,7 +23,7 @@ public interface VasApiService {
 
     @FormUrlEncoded
     @POST("otp/charge")
-    Call<ChargeOtpResponse> chargeOtp(@Field("mobile") String mobile, @Field("pin") String pin, @Field("campaign") String campaign);
+    Call<ChargeOtpResponse> chargeOtp(@Header("appVersion") String appVersionName, @Field("mobile") String mobile, @Field("pin") String pin, @Field("campaign") String campaign);
 
     @GET("subscription/check")
     Call<SubscriptionResponse> isSubscribed(@Header("mobile") String mobile, @Header("token") String token);
