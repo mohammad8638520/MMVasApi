@@ -49,6 +49,7 @@ public interface VasApiService {
                                     @Header("srvkey") String srvkey,
                                     @Header("token") String token);
 
+    @FormUrlEncoded
     @POST("purchaseCharkhune")
     Call<ChargeOtpResponse> purchaseCharkhune(@Header("appVersion") String appVersionName,
                                               @Field("mobile") String mobile,
