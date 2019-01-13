@@ -19,14 +19,19 @@ public interface VasApiService {
 
     @FormUrlEncoded
     @POST("otp/request")
-    Call<PushOtpResponse> pushOtp(@Field("mobile") String mobile, @Field("campaign") String campaign);
+    Call<PushOtpResponse> pushOtp(@Field("mobile") String mobile,
+                                  @Field("campaign") String campaign);
 
     @FormUrlEncoded
     @POST("otp/charge")
-    Call<ChargeOtpResponse> chargeOtp(@Header("appVersion") String appVersionName, @Field("mobile") String mobile, @Field("pin") String pin, @Field("campaign") String campaign);
+    Call<ChargeOtpResponse> chargeOtp(@Header("appVersion") String appVersionName,
+                                      @Field("mobile") String mobile,
+                                      @Field("pin") String pin,
+                                      @Field("campaign") String campaign);
 
     @GET("subscription/check")
-    Call<SubscriptionResponse> isSubscribed(@Header("mobile") String mobile, @Header("token") String token);
+    Call<SubscriptionResponse> isSubscribed(@Header("mobile") String mobile,
+                                            @Header("token") String token);
 
     @FormUrlEncoded
     @POST("unsubscribe")
@@ -43,5 +48,11 @@ public interface VasApiService {
                                     @Path("value") int value,
                                     @Header("srvkey") String srvkey,
                                     @Header("token") String token);
+
+    @POST("purchaseCharkhune")
+    Call<ChargeOtpResponse> purchaseCharkhune(@Header("appVersion") String appVersionName,
+                                              @Field("mobile") String mobile,
+                                              @Field("pToken") String pToken,
+                                              @Field("campaign") String campaign);
 
 }

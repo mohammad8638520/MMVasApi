@@ -70,6 +70,14 @@ public class VasApiHelper {
         getApiService().chargeOtp(appVersionName, mobile, pin, "").enqueue(verifyOtpListener);
     }
 
+    public void verifyCharkhunePayment(String purchaseToken, VerifyOtpListener verifyOtpListener) {
+        if (TextUtils.isEmpty(purchaseToken)) {
+            return;
+        }
+        String mobile = getMobileNumber();
+        getApiService().purchaseCharkhune(appVersionName, mobile, purchaseToken, "").enqueue(verifyOtpListener);
+    }
+
     public void verifyOtp(String pin, String campaign, VerifyOtpListener verifyOtpListener) {
         if (TextUtils.isEmpty(pin)) {
             return;

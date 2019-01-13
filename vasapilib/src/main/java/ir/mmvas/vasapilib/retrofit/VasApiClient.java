@@ -59,13 +59,14 @@ public class VasApiClient {
 
     public static enum VasPlat {
         IMI("imi"),
-        PARDIS("pardis");
-
-        private VasPlat(String s) {
-            name = s;
-        }
+        PARDIS("pardis"),
+        IMI_CHARKHUNE("imich/app");
 
         private final String name;
+
+        private VasPlat(String s) {
+            this.name = s;
+        }
 
         public String getName(){
             return this.name;

@@ -17,7 +17,7 @@ public abstract class PushOtpListener extends BaseCallback<PushOtpResponse> {
         if(response.isSuccessful()) {
             PushOtpResponse res = response.body();
             if(res.isOk()) {
-                success(res.getMessage());
+                success(res.getMessage(), res.useCharkhunePayment(), res.isCharkhuneUser(), res.getCharkhuneSku());
             } else {
                 failure(res.getMessage());
             }
@@ -32,6 +32,6 @@ public abstract class PushOtpListener extends BaseCallback<PushOtpResponse> {
         failure(VasApiHelper.error_in_connection);
     }
 
-    public abstract void success(String message);
+    public abstract void success(String message, boolean useCharkhunePayment, boolean isCharkhuneUser, String charkhuneSku);
     public abstract void failure(String message);
 }
