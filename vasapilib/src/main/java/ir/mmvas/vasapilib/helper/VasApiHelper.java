@@ -12,6 +12,7 @@ import ir.mmvas.vasapilib.retrofit.VasApiClient;
 import ir.mmvas.vasapilib.retrofit.VasApiService;
 import ir.mmvas.vasapilib.retrofit.listeners.PushOtpListener;
 import ir.mmvas.vasapilib.retrofit.listeners.SubscriptionCheckListener;
+import ir.mmvas.vasapilib.retrofit.listeners.UnSubscribeListener;
 import ir.mmvas.vasapilib.retrofit.listeners.UserModelListener;
 import ir.mmvas.vasapilib.retrofit.listeners.VerifyOtpListener;
 import ir.mmvas.vasapilib.retrofit.models.VasUserModel;
@@ -84,6 +85,16 @@ public class VasApiHelper {
         }
         String mobile = getMobileNumber();
         getApiService().chargeOtp(appVersionName, mobile, pin, campaign).enqueue(verifyOtpListener);
+    }
+
+    public void unsubscribe(UnSubscribeListener listener){
+        if(!hasToken()) {
+            if(listener != null) {
+                listener.failure("");
+            }
+            return;
+        }
+        getApiService().unsubscribe(getToken()).enqueue(listener);
     }
 
     public void checkSubscription(SubscriptionCheckListener subCheckListener){
