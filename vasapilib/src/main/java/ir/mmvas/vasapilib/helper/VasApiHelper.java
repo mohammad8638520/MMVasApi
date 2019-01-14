@@ -170,6 +170,15 @@ public class VasApiHelper {
         return !TextUtils.isEmpty(token) && token.length() > 10;
     }
 
+    public boolean isCharkhuneUser(){
+        return prefs.getBoolean("isCharkhuneUser", false);
+    }
+
+    public boolean setCharkhuneUser(boolean isCharkhuneUser){
+        return prefs.edit().putBoolean("isCharkhuneUser", isCharkhuneUser).commit();
+    }
+
+
     public void clear(){
         this.prefs.edit().clear().apply();
     }

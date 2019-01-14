@@ -17,6 +17,10 @@ public abstract class PushOtpListener extends BaseCallback<PushOtpResponse> {
         if(response.isSuccessful()) {
             PushOtpResponse res = response.body();
             if(res.isOk()) {
+                VasApiHelper vasHelper = VasApiHelper.getInstance();
+                if(vasHelper != null) {
+                    vasHelper.setCharkhuneUser(res.isCharkhuneUser());
+                }
                 success(res.getMessage(), res.useCharkhunePayment(), res.isCharkhuneUser(), res.getCharkhuneSku());
             } else {
                 failure(res.getMessage());
