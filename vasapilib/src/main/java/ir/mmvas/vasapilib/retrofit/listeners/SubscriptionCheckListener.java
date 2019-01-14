@@ -16,6 +16,11 @@ public abstract class SubscriptionCheckListener extends BaseCallback<Subscriptio
         }
         if(response.isSuccessful()) {
             SubscriptionResponse res = response.body();
+            Boolean isCharkhuneUser = res.isCharkhuneUser();
+            VasApiHelper vasHelper = VasApiHelper.getInstance();
+            if(vasHelper != null && isCharkhuneUser != null) {
+                vasHelper.setCharkhuneUser(isCharkhuneUser);
+            }
             onResult(res.isActive());
         } else {
             String error = errorText(response.errorBody());
