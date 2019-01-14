@@ -35,7 +35,7 @@ public interface VasApiService {
 
     @FormUrlEncoded
     @POST("unsubscribe")
-    Call<Object> unsubscribe(@Field("mobile") String mobile, @Header("token")String token);
+    Call<String> unsubscribe(@Field("mobile") String mobile, @Header("token")String token);
 
     @GET("user/{mobile}")
     Call<VasUserModel> getUser(@Path("mobile") String mobile,
