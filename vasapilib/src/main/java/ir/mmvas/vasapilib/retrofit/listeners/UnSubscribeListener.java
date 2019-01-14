@@ -1,28 +1,34 @@
 package ir.mmvas.vasapilib.retrofit.listeners;
 
 import ir.mmvas.vasapilib.helper.VasApiHelper;
+import ir.mmvas.vasapilib.retrofit.models.Res;
 import retrofit2.Call;
 import retrofit2.Response;
 
 
-public abstract class UnSubscribeListener extends BaseCallback<String> {
+public abstract class UnSubscribeListener extends BaseCallback<Res> {
 
     @Override
-    public void onResponse(Call<String> call, Response<String> response) {
+    public void onResponse(Call<Res> call, Response<Res> response) {
         if(response == null || response.body() == null) {
             failure("");
             return;
         }
+        Res res = response.body();
         if(response.isSuccessful()) {
-            success(response.body());
+            if(res.status) {
+                success(res.message);
+            } else {
+                failure(res.message);
+            }
         } else {
-            String error = errorText(response.errorBody());
-            failure(error);
+            String errorText = errorText(response.errorBody());
+            failure(errorText);
         }
     }
 
     @Override
-    public void onFailure(Call<String> call, Throwable t) {
+    public void onFailure(Call<Res> call, Throwable t) {
         failure(VasApiHelper.error_in_connection);
     }
 

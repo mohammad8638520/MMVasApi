@@ -3,6 +3,7 @@ package ir.mmvas.vasapilib.retrofit;
 
 import ir.mmvas.vasapilib.retrofit.models.ChargeOtpResponse;
 import ir.mmvas.vasapilib.retrofit.models.PushOtpResponse;
+import ir.mmvas.vasapilib.retrofit.models.Res;
 import ir.mmvas.vasapilib.retrofit.models.SubscriptionResponse;
 import ir.mmvas.vasapilib.retrofit.models.VasUserModel;
 import retrofit2.Call;
@@ -35,7 +36,7 @@ public interface VasApiService {
 
     @FormUrlEncoded
     @POST("unsubscribe")
-    Call<String> unsubscribe(@Field("mobile") String mobile, @Header("token")String token);
+    Call<Res> unsubscribe(@Field("mobile") String mobile, @Header("token")String token);
 
     @GET("user/{mobile}")
     Call<VasUserModel> getUser(@Path("mobile") String mobile,
