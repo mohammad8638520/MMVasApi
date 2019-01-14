@@ -88,13 +88,14 @@ public class VasApiHelper {
     }
 
     public void unsubscribe(UnSubscribeListener listener){
-        if(!hasToken()) {
+        String mobile = getMobileNumber();
+        if(!hasToken() || TextUtils.isEmpty(mobile)) {
             if(listener != null) {
                 listener.failure("");
             }
             return;
         }
-        getApiService().unsubscribe(getToken()).enqueue(listener);
+        getApiService().unsubscribe(mobile, getToken()).enqueue(listener);
     }
 
     public void checkSubscription(SubscriptionCheckListener subCheckListener){
