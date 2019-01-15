@@ -60,7 +60,7 @@ public class VasApiClient {
     public static enum VasPlat {
         IMI("imi"),
         PARDIS("pardis"),
-        IMI_CHARKHUNE("imich/app");
+        IMI_CHARKHUNE("imich-app");
 
         private final String name;
 
