@@ -25,6 +25,7 @@ public class VasApiHelper {
     private VasApiClient.VasPlat platform;
     private final String appVersionName;
     private SharedPreferences prefs;
+    private String srvkey = "";
 
     public static String error_in_connection = "WebService Error";
 
@@ -39,6 +40,7 @@ public class VasApiHelper {
         if(!TextUtils.isEmpty(srvkey)){
             this.prefs.edit().putString("srvkey", srvkey).apply();
         }
+        this.srvkey = srvkey;
         return this;
     }
 
@@ -184,7 +186,11 @@ public class VasApiHelper {
     }
 
     public String srvkey(){
-        return this.prefs.getString("srvkey", "");
+        String s = this.srvkey;
+        if(TextUtils.isEmpty(s)) {
+            s = this.prefs.getString("srvkey", "");
+        }
+        return s;
     }
 
     public void saveUser(VasUserModel user) {
