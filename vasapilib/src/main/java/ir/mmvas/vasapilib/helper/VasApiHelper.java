@@ -155,7 +155,7 @@ public class VasApiHelper {
         return prefs.getString("mobile", null);
     }
 
-    private void saveMobileNumber(String mob){
+    public void saveMobileNumber(String mob){
         prefs.edit().putString("mobile", mob).commit();
     }
 
