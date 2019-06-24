@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/MMVasApi.iml" filepath="$PROJECT_DIR$/MMVasApi.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/MMVasApiLib.iml" filepath="$PROJECT_DIR$/.idea/MMVasApiLib.iml" />
       <module fileurl="file://$PROJECT_DIR$/vasapilib/vasapilib.iml" filepath="$PROJECT_DIR$/vasapilib/vasapilib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/vasapilib/vasapilib.iml" filepath="$PROJECT_DIR$/vasapilib/vasapilib.iml" />
     </modules>
   </component>
 </project>

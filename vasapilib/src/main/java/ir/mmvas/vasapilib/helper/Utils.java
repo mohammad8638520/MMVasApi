@@ -1,5 +1,8 @@
 package ir.mmvas.vasapilib.helper;
 
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.text.TextUtils;
 
 
@@ -61,5 +64,18 @@ public class Utils {
         }
         return true;
     }
+
+    public static String getAppVersionName(Context context) {
+        PackageManager manager = context.getPackageManager();
+        try {
+            PackageInfo info = manager.getPackageInfo(
+                    context.getPackageName(), 0);
+            return info.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return "1.0.0";
+        }
+    }
+
 
 }

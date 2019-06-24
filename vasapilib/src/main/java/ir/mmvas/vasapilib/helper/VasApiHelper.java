@@ -22,16 +22,15 @@ public class VasApiHelper {
     private static VasApiService vasApiService;
 
     private final long serviceId;
-    private VasApiClient.VasPlat platform;
     private final String appVersionName;
     private SharedPreferences prefs;
     private String srvkey = "";
 
     public static String error_in_connection = "WebService Error";
 
-    public static VasApiHelper getInstance(Context context, VasApiClient.VasPlat platform, long serviceId) {
+    public static VasApiHelper getInstance(Context context, long serviceId) {
         if(instance == null) {
-            instance = new VasApiHelper(context, platform, serviceId);
+            instance = new VasApiHelper(context, serviceId);
         }
         return instance;
     }
@@ -49,12 +48,14 @@ public class VasApiHelper {
         return instance;
     }
 
-    private VasApiHelper(Context context, VasApiClient.VasPlat platform, long serviceId) {
+    private VasApiHelper(Context context, long serviceId) {
         prefs = context.getSharedPreferences("VasApiHelper", Context.MODE_PRIVATE);
-        this.platform = platform;
         this.serviceId = serviceId;
         appVersionName = "app_" + getAppVersionName(context);
         VasApiHelper.error_in_connection = context.getString(R.string.vas_apilib_error_in_connection);
+        if(vasApiService == null) {
+            vasApiService = VasApiClient.client(context, serviceId).create(VasApiService.class);
+        }
     }
 
     public void pushOtp(String mobile, PushOtpListener pushOtpListener){
@@ -215,9 +216,6 @@ public class VasApiHelper {
     }
 
     private VasApiService getApiService() {
-        if(vasApiService == null) {
-            vasApiService = VasApiClient.client(platform, serviceId).create(VasApiService.class);
-        }
         return vasApiService;
     }
 
