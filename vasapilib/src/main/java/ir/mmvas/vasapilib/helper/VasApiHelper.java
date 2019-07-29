@@ -21,6 +21,9 @@ public class VasApiHelper {
     private static VasApiHelper instance;
     private static VasApiService vasApiService;
 
+    private boolean isFakeVersion = false;
+    private static final String FAKE_TOKEN = "fake-abcdefgh-ijklmno-pqrstu-vwxyz";
+
     private final long serviceId;
     private final String appVersionName;
     private SharedPreferences prefs;
@@ -43,6 +46,10 @@ public class VasApiHelper {
         return this;
     }
 
+    public VasApiHelper fakeVersion(boolean fake) {
+        this.isFakeVersion = fake;
+        return this;
+    }
 
     public static VasApiHelper getInstance(){
         return instance;
@@ -63,7 +70,11 @@ public class VasApiHelper {
             return;
         }
         saveMobileNumber(mobile);
-        getApiService().pushOtp(mobile, appVersionName).enqueue(pushOtpListener);
+        if(isFakeVersion) {
+            pushOtpListener.success("OTP Sent", false, false, "");
+        } else {
+            getApiService().pushOtp(mobile, appVersionName).enqueue(pushOtpListener);
+        }
     }
 
     public void verifyOtp(String pin, VerifyOtpListener verifyOtpListener) {
@@ -71,7 +82,11 @@ public class VasApiHelper {
             return;
         }
         String mobile = getMobileNumber();
-        getApiService().chargeOtp(appVersionName, mobile, pin, "").enqueue(verifyOtpListener);
+        if(isFakeVersion) {
+            verifyOtpListener.success(FAKE_TOKEN);
+        } else {
+            getApiService().chargeOtp(appVersionName, mobile, pin, "").enqueue(verifyOtpListener);
+        }
     }
 
     public void verifyCharkhunePayment(String purchaseToken, VerifyOtpListener verifyOtpListener) {
@@ -87,7 +102,11 @@ public class VasApiHelper {
             return;
         }
         String mobile = getMobileNumber();
-        getApiService().chargeOtp(appVersionName, mobile, pin, campaign).enqueue(verifyOtpListener);
+        if(isFakeVersion) {
+            verifyOtpListener.success(FAKE_TOKEN);
+        } else {
+            getApiService().chargeOtp(appVersionName, mobile, pin, campaign).enqueue(verifyOtpListener);
+        }
     }
 
     public void unsubscribe(UnSubscribeListener listener){
@@ -98,7 +117,11 @@ public class VasApiHelper {
             }
             return;
         }
-        getApiService().unsubscribe(mobile, getToken()).enqueue(listener);
+        if(isFakeVersion) {
+            listener.success("Unsubscribed");
+        } else {
+            getApiService().unsubscribe(mobile, getToken()).enqueue(listener);
+        }
     }
 
     public void checkSubscription(SubscriptionCheckListener subCheckListener){
@@ -112,7 +135,11 @@ public class VasApiHelper {
         if(TextUtils.isEmpty(token)){
             token = getToken();
         }
-        getApiService().isSubscribed(mobile, token).enqueue(subCheckListener);
+        if(isFakeVersion) {
+            subCheckListener.onResult(true);
+        } else {
+            getApiService().isSubscribed(mobile, token).enqueue(subCheckListener);
+        }
     }
 
     public void getUserDetails(UserModelListener listener) {
@@ -148,9 +175,6 @@ public class VasApiHelper {
         }
         getApiService().addUserScore(mobile, index, value, srvkey, getToken()).enqueue(listener);
     }
-
-
-
 
     public String getMobileNumber() {
         return prefs.getString("mobile", null);
