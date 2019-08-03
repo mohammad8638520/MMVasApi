@@ -78,18 +78,6 @@ public class VasApiHelper {
         }
     }
 
-    public void verifyOtp(String pin, VerifyOtpListener verifyOtpListener) {
-        if (TextUtils.isEmpty(pin)) {
-            return;
-        }
-        String mobile = getMobileNumber();
-        if(isFakeVersion) {
-            saveToken(FAKE_TOKEN);
-            verifyOtpListener.success(FAKE_TOKEN);
-        } else {
-            getApiService().chargeOtp(appVersionName, mobile, pin, "").enqueue(verifyOtpListener);
-        }
-    }
 
     public void verifyCharkhunePayment(String purchaseToken, VerifyOtpListener verifyOtpListener) {
         if (TextUtils.isEmpty(purchaseToken)) {
@@ -99,13 +87,37 @@ public class VasApiHelper {
         getApiService().purchaseCharkhune(appVersionName, mobile, purchaseToken, "").enqueue(verifyOtpListener);
     }
 
+    public void verifyOtp(String pin, VerifyOtpListener verifyOtpListener) {
+        if (TextUtils.isEmpty(pin)) {
+            return;
+        }
+        String mobile = getMobileNumber();
+        if(isFakeVersion) {
+            if(!TextUtils.isEmpty(mobile)) {
+                saveToken(FAKE_TOKEN);
+                verifyOtpListener.success(FAKE_TOKEN);
+            } else {
+                saveToken("");
+                verifyOtpListener.failure("Wrong Mobile Number");
+            }
+        } else {
+            getApiService().chargeOtp(appVersionName, mobile, pin, "").enqueue(verifyOtpListener);
+        }
+    }
+
     public void verifyOtp(String pin, String campaign, VerifyOtpListener verifyOtpListener) {
         if (TextUtils.isEmpty(pin)) {
             return;
         }
         String mobile = getMobileNumber();
         if(isFakeVersion) {
-            verifyOtpListener.success(FAKE_TOKEN);
+            if(!TextUtils.isEmpty(mobile)) {
+                saveToken(FAKE_TOKEN);
+                verifyOtpListener.success(FAKE_TOKEN);
+            } else {
+                saveToken("");
+                verifyOtpListener.failure("Wrong Mobile Number");
+            }
         } else {
             getApiService().chargeOtp(appVersionName, mobile, pin, campaign).enqueue(verifyOtpListener);
         }
