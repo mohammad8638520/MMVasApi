@@ -71,6 +71,7 @@ public class VasApiHelper {
         }
         saveMobileNumber(mobile);
         if(isFakeVersion) {
+            saveMobileNumber(mobile);
             pushOtpListener.success("OTP Sent", false, false, "");
         } else {
             getApiService().pushOtp(mobile, appVersionName).enqueue(pushOtpListener);
@@ -83,6 +84,7 @@ public class VasApiHelper {
         }
         String mobile = getMobileNumber();
         if(isFakeVersion) {
+            saveToken(FAKE_TOKEN);
             verifyOtpListener.success(FAKE_TOKEN);
         } else {
             getApiService().chargeOtp(appVersionName, mobile, pin, "").enqueue(verifyOtpListener);
@@ -118,6 +120,8 @@ public class VasApiHelper {
             return;
         }
         if(isFakeVersion) {
+            saveMobileNumber("");
+            saveToken("");
             listener.success("Unsubscribed");
         } else {
             getApiService().unsubscribe(mobile, getToken()).enqueue(listener);
